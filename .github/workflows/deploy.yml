@@ -1,0 +1,35 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      REACT_APP_USER_SERVER: https://demo-api.incodesmile.com
+      REACT_APP_CLIENT_ID: incode
+      REACT_APP_SDK_URL: https://sdk.incode.com/sdk/onBoarding-1.42.0.js
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: CI=false yarn build
+
+      - name: Deploy
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: build
+          bucket: ${{ secrets.S3_BUCKET }}
+          bucket-region: ${{ secrets.S3_BUCKET_REGION }}
+          dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
