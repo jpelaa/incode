@@ -334,7 +334,10 @@ export default function App() {
   if (error) return "Error!";
   return (
     <Steps currentStep={step}>
-    <Selfie
+    <FrontId session={session} onSuccess={goNext} onError={handleError} />
+      <BackId session={session} onSuccess={goNext} onError={handleError} />
+      <ProcessId session={session} onSuccess={goNext} />
+      <Selfie
         session={session}
         onSuccess={(res) => {
           setLiveness(res?.liveness);
@@ -343,18 +346,15 @@ export default function App() {
         }}
         onError={handleError}
       />
-          <Signature session={session} onSuccess={goNext} onError={handleError} />
     
-      <FrontId session={session} onSuccess={goNext} onError={handleError} />
-      <BackId session={session} onSuccess={goNext} onError={handleError} />
-      <ProcessId session={session} onSuccess={goNext} />
-      
       <FaceMatch
         session={session}
         onSuccess={goNext}
         liveness={liveness}
         userExists={userExists}
       />
+                <Signature session={session} onSuccess={goNext} onError={handleError} />
+
       <RetrySteps
         session={session}
         numberOfTries={3}
