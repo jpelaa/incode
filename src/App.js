@@ -334,7 +334,6 @@ export default function App() {
   if (error) return "Error!";
   return (
     <Steps currentStep={step}>
-          <Signature session={session} onSuccess={goNext} onError={handleError} />
     <Selfie
         session={session}
         onSuccess={(res) => {
@@ -344,6 +343,8 @@ export default function App() {
         }}
         onError={handleError}
       />
+          <Signature session={session} onSuccess={goNext} onError={handleError} />
+    
       <FrontId session={session} onSuccess={goNext} onError={handleError} />
       <BackId session={session} onSuccess={goNext} onError={handleError} />
       <ProcessId session={session} onSuccess={goNext} />
